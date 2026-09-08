@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Anomaly Dashboard</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f4f4;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px;
+    }
+    h1 { color: #333; }
+    canvas {
+      background: white;
+      border: 2px solid #ccc;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    .legend {
+      margin-top: 10px;
+      display: flex;
+      gap: 20px;
+    }
+    .legend span { display: flex; align-items: center; gap: 5px; }
+    .dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      display: inline-block;
+    }
+    .blue { background: blue; }
+    .red { background: red; }
+  </style>
+</head>
+<body>
+  <h1>Live Anomaly Detector</h1>
+  <canvas id="chart" width="800" height="400"></canvas>
+  
+  <div class="legend">
+    <span><div class="dot blue"></div> Normal Data</span>
+    <span><div class="dot red"></div> Anomaly</span>
+  </div>
+
+  <script>
+    const canvas = document.getElementById('chart');
+    const ctx = canvas.getContext('2d');
+    let data = []; // stores {y, anomaly, xPixel, yPixel}
+
+    const maxPoints = 100; 
+    const padding = 40;
+
+    function draw() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      if (data.length < 2) return;
+
+      const ys = data.map(p => p.y);
+      const minY = Math.min(...ys) - 10;
+      const maxY = Math.max(...ys) + 10;
+
+      // 1. Draw BLUE line
+      ctx.beginPath();
+      ctx.strokeStyle = 'blue';
+      ctx.lineWidth = 2;
+      data.forEach((p, i) => {
+        const x = padding + (i / (maxPoints - 1)) * (canvas.width - 2 * padding);
+        const yPixel = canvas.height - padding - ((p.y - minY) / (maxY - minY)) * (canvas.height - 2 * padding);
+        if (i === 0) ctx.moveTo(x, yPixel);
+        else ctx.lineTo(x, yPixel);
+        p.xPixel = x; 
+        p.yPixel = yPixel;
+      });
+      ctx.stroke();
+
+      // 2. Draw RED dots for anomalies
+      data.forEach(p => {
+        if (p.anomaly === true) {
+          ctx.beginPath();
+          ctx.arc(p.xPixel, p.yPixel, 6, 0, Math.PI * 2);
+          ctx.fillStyle = 'red';
+          ctx.fill();
+        }
+      });
+
+      // Axes
+      ctx.strokeStyle = '#aaa';
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(padding, padding);
+      ctx.lineTo(padding, canvas.height - padding);
+      ctx.lineTo(canvas.width - padding, canvas.height - padding);
+      ctx.stroke();
+    }
+
+    setInterval(async () => {
+      try {
+        let res = await fetch('/latest'); 
+        let newPoint = await res.json();
+        data.push({ y: newPoint.y, anomaly: newPoint.anomaly });
+        if (data.length > maxPoints) data.shift();
+        draw();
+      } catch (e) {
+        console.log("Waiting for data...");
+      }
+    }, 1000);
+  </script>
+</body>
+</html>
