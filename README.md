@@ -1,3 +1,4 @@
+<img width="499" height="500" alt="Capture" src="https://github.com/user-attachments/assets/c9899755-a286-4608-9074-aa32d2e627ef" />
 Real-Time Anomaly Detection Dashboard
 
 A real-time anomaly detection dashboard built with FastAPI.
