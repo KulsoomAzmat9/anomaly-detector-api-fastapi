@@ -42,8 +42,8 @@ Returns last 100 data points for the graph
 GET /dashboard
 Serves the live HTML dashboard page
 
-Live Demo
 
-![my video](./demo.mp4)
+
+
 
 
