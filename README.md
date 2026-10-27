@@ -42,3 +42,4 @@ Returns last 100 data points for the graph
 GET /dashboard
 Serves the live HTML dashboard page
 
+![my video](./Live  Anomaly Detection.  Real-time Dashboard Demo.mp4)
