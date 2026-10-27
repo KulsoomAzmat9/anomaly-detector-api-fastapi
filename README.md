@@ -1,7 +1,4 @@
 
-
-https://github.com/user-attachments/assets/816f9a37-afbf-4db5-88d3-1a2bf6ff4a99
-
 A real-time anomaly detection dashboard built with FastAPI.
 test_anomaly.py` sends 100 random data points to the server. 
 dashboard.html` shows them live. Red dots = Anomaly, Blue = Normal.
@@ -45,6 +42,8 @@ GET /dashboard
 Serves the live HTML dashboard page
 
 Live Demo
+
+https://github.com/user-attachments/assets/816f9a37-afbf-4db5-88d3-1a2bf6ff4a99
 
 
 
