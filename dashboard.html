@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Live Anomaly Detector</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+body{font-family:Arial;background:#f5f7fa;padding:20px}
+.card{background:white;border-radius:12px;padding:20px;box-shadow:0 4px 12px rgba(0,0,0,0.1);max-width:900px;margin:auto}
+#status{font-weight:bold;padding:6px 12px;border-radius:20px;display:inline-block}
+.ok{background:#d1fae5;color:#065f46}
+.anomaly{background:#fee2e2;color:#991b1b}
+</style>
+</head>
+<body>
+<div class="card">
+<h2>Live Anomaly Detector - Ultrasonic</h2>
+<div><span id="status" class="ok">● NORMAL</span> <span id="arrow" style="font-size:28px">➡️</span></div>
+<p>Current: <b id="curr">--</b> | Anomalies: <b id="count">0</b> | Time: <b id="time">0s</b></p>
+<canvas id="chart" height="120"></canvas>
+</div>
+<script>
+let data=[],colors=[],t=0,anomalyCount=0;
+const ctx=document.getElementById('chart').getContext('2d');
+const chart=new Chart(ctx,{type:'scatter',data:{datasets:[{data:[],pointRadius:7,pointBackgroundColor:[]}]},options:{animation:false,scales:{x:{title:{display:true,text:'Time (s)'}},y:{min:0,max:100,title:{display:true,text:'Distance (cm)'}}},plugins:{legend:{display:false}}}});
+function addPoint(){t++;let isAnomaly=Math.random()<0.18;let value=isAnomaly?10+Math.random()*70:45+(Math.random()-0.5)*10;data.push({x:t,y:value});colors.push(isAnomaly?'#ef4444':'#3b82f6');if(data.length>40){data.shift();colors.shift();}chart.data.datasets[0].data=data;chart.data.datasets[0].pointBackgroundColor=colors;chart.update();document.getElementById('curr').innerText=value.toFixed(2)+' cm';document.getElementById('time').innerText=t+'s';const s=document.getElementById('status');const a=document.getElementById('arrow');if(isAnomaly){anomalyCount++;s.innerText='● ANOMALY DETECTED';s.className='anomaly';a.innerText='🚨⬅️';}else{s.innerText='● NORMAL';s.className='ok';a.innerText='➡️';}document.getElementById('count').innerText=anomalyCount;}
+setInterval(addPoint,600);addPoint();
+</script>
+</body>
+</html>
