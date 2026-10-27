@@ -44,9 +44,6 @@ Serves the live HTML dashboard page
 
 Live Demo
 
-<video src="https://github.com/user-attachments/assets/16076a4e-8e5d-4eeb-b294-8b382f68940a" width="750" controls autoplay loop ></video>
-
-Real-time anomaly detection dashboard showing live RRCF scoring
 
 
 
