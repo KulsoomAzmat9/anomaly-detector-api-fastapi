@@ -5,9 +5,9 @@ test_anomaly.py` sends 100 random data points to the server.
 dashboard.html` shows them live. Red dots = Anomaly, Blue = Normal.
 
  Tech Stack
-- Python 3.12
-- FastAPI + Uvicorn
-- HTML5 Canvas + JavaScript
+ Python 
+ FastAPI + Uvicorn
+ HTML5 Canvas + JavaScript
 
  Installation
 powershell
@@ -24,21 +24,21 @@ Open Dashboard:http://127.0.0.1:8000/dashboard
 
  API Endpoints
 
-**GET /** 
+GET /
 Health check. 
 Example: {"message": "Anomaly Detector API is running"}
 
-**POST /data** 
+POST /data
 Receives a data point from test_anomaly.py
 Example: {"x": 1, "y": 45.2, "anomaly": false}
 
-**GET /latest** 
+GET /latest
 Returns the newest data point. Used by dashboard
 Example: {"x": 5, "y": 82.1, "anomaly": true}
 
-**GET /history** 
+GET /history
 Returns last 100 data points for the graph
 
-**GET /dashboard** 
+GET /dashboard
 Serves the live HTML dashboard page
 
