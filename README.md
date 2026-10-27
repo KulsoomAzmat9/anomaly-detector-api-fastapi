@@ -42,8 +42,11 @@ Returns last 100 data points for the graph
 GET /dashboard
 Serves the live HTML dashboard page
 
+Live Demo
 
+<video src="YOUR-ISSUE-LINK-HERE" width="700" controls autoplay muted></video>
 
+Real-time anomaly detection dashboard showing live RRCF scoring
 
 
 
